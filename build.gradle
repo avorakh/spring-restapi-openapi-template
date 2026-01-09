@@ -1,0 +1,189 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'java'
+    id 'groovy'
+    alias libs.plugins.spring.boot
+    alias libs.plugins.lombok
+    alias libs.plugins.spotless
+    id 'checkstyle'
+    id 'jacoco'
+    id 'maven-publish'
+    id 'pmd'
+    alias libs.plugins.dependencycheck
+}
+
+group = 'dev.avorakh.isdp'
+version = '0.2.0-SNAPSHOT'
+description = 'Spring REST API Template'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly libs.jspecify
+
+    implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation libs.bundles.sec.fix
+
+    developmentOnly libs.spring.boot.devtools
+
+    testImplementation platform(libs.groovy.bom)
+    testImplementation platform(libs.spock.bom)
+    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'org.spockframework:spock-spring'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+lombok {
+    version = "${libs.versions.lombok.get()}"
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    finalizedBy jacocoTestReport
+}
+
+
+jacoco {
+    toolVersion = libs.versions.jacoco.get()
+}
+
+
+jacocoTestReport {
+    executionData(test)
+    reports {
+        xml.required = true
+        html.required = true
+    }
+    dependsOn test
+}
+
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.7 // 70% Code Coverage
+            }
+        }
+    }
+    dependsOn jacocoTestReport
+}
+
+check.dependsOn jacocoTestCoverageVerification
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = "spring-restapi-template"
+                description = "Spring Boot REST API template"
+                url = "https://github.com/avorakh/spring-restapi-template"
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "https://opensource.org/licenses/MIT"
+                        distribution = "repo"
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "snapshotRepo"
+            url = uri(findProperty("snapshot.repo.url"))
+            credentials {
+                username = findProperty("snapshot.repo.user")
+                password = findProperty("snapshot.repo.token")
+            }
+        }
+    }
+}
+
+def spotlessConfigFilePath = "$rootDir/config/spotless/custom-java.xml"
+
+spotless {
+    java {
+        eclipse().configFile(spotlessConfigFilePath)
+        palantirJavaFormat()
+        importOrder()
+        endWithNewline()
+        removeUnusedImports()
+        cleanthat()
+        formatAnnotations()
+        forbidWildcardImports()
+    }
+
+    groovy {
+        greclipse().configFile(spotlessConfigFilePath)
+        importOrder()
+        endWithNewline()
+        removeSemicolons()
+        trimTrailingWhitespace()
+    }
+
+    groovyGradle {
+        target '*.gradle' // default target of groovyGradle
+        greclipse().configFile(spotlessConfigFilePath)
+    }
+}
+
+checkstyle {
+    toolVersion = libs.versions.checkstyle.get()
+    configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
+    ignoreFailures = false
+    showViolations = true
+}
+
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+pmd {
+    ignoreFailures = true
+    consoleOutput = true
+    toolVersion = libs.versions.pmd.tool.get()
+    rulesMinimumPriority = 5
+    ruleSetFiles = files("$rootDir/config/pmd/pmd.xml") // The location of the configuration file.
+    ruleSets = []
+}
+
+dependencyCheck {
+    analyzedTypes = ['jar']
+    analyzers {
+        assemblyEnabled = false
+        nuspecEnabled = false
+        nugetconfEnabled = false
+        msbuildEnabled = false
+        bundleAuditEnabled = false
+    }
+}

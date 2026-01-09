@@ -1,0 +1,57 @@
+name: Java CI with Gradle
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3.5.0
+        with:
+          gradle-version: 8.14
+
+      - name: Create Gradle properties
+        run: |
+          mkdir -p ~/.gradle
+          cat <<EOF > ~/.gradle/gradle.properties
+          snapshot.repo.url=${{ secrets.SNAPSHOT_REPO_URL }}
+          snapshot.repo.user=${{ secrets.SNAPSHOT_REPO_USER }}
+          snapshot.repo.token=${{ secrets.SNAPSHOT_REPO_TOKEN }}
+          EOF
+
+      - name: Build with Gradle
+        run: gradle build
+
+      - name: SonarQubeScan
+        uses: SonarSource/sonarqube-scan-action@v6.0.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
