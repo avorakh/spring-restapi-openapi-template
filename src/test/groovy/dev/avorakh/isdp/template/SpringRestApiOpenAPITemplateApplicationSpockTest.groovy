@@ -6,7 +6,7 @@ import org.springframework.core.env.Environment
 import spock.lang.Specification
 
 @SpringBootTest
-class SpringRestApiTemplateApplicationSpockTest extends Specification {
+class SpringRestApiOpenAPITemplateApplicationSpockTest extends Specification {
 
     @Autowired
     Environment env

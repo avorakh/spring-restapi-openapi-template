@@ -14,8 +14,8 @@ plugins {
 }
 
 group = 'dev.avorakh.isdp'
-version = '0.2.0-SNAPSHOT'
-description = 'Spring REST API Template'
+version = '0.1.0-SNAPSHOT'
+description = 'Spring REST API Open API Template'
 
 java {
     toolchain {

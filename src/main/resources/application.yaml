@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Spring REST API Template
+    name: spring-restapi-openapi-template
 server:
   port: 8090
   servlet:
