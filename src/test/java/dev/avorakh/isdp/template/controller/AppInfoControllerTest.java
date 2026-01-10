@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import dev.avorakh.isdp.template.resource.AppInfoMeta;
+import dev.avorakh.isdp.template.model.AppInfoMeta;
 import dev.avorakh.isdp.template.svc.AppInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,11 @@ class AppInfoControllerTest {
         var expectedName = "test";
         boolean expectedSuccess = true;
 
-        when(appInfoService.getAppInfo()).thenReturn(new AppInfoMeta(expectedSuccess, expectedName));
+        when(appInfoService.getAppInfo())
+                .thenReturn(AppInfoMeta.builder()
+                        .success(expectedSuccess)
+                        .name(expectedName)
+                        .build());
 
         var request = get("/app/info").accept(MediaType.APPLICATION_JSON);
 

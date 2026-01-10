@@ -17,8 +17,8 @@ class AppInfoServiceImplSpockTest extends Specification {
         then:
         actual
         with(actual) {
-            success()
-            name() == 'template'
+            getSuccess()
+            getName() == 'template'
         }
     }
 }

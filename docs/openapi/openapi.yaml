@@ -1,0 +1,55 @@
+openapi: 3.1.0
+info:
+  title: Spring REST API OpenAPI Template
+  description: Spring Boot REST API template with OpenAPI integration
+  version: 0.1.0
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: API Support
+
+servers:
+  - url: http://localhost:8090/template
+    description: Local development server
+
+tags:
+  - name: App Info
+    description: Application information endpoints
+
+paths:
+  /app/info:
+    get:
+      tags:
+        - App Info
+      summary: Get application information
+      description: Returns the application metadata including name and status
+      operationId: getAppInfo
+      responses:
+        '200':
+          description: Successful response with application information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppInfoMeta'
+
+components:
+  schemas:
+    AppInfoMeta:
+      type: object
+      description: Application information metadata
+      required:
+        - success
+        - name
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the application is running successfully
+          examples:
+            - true
+        name:
+          type: string
+          description: The name of the application
+          examples:
+            - spring-restapi-openapi-template
+
