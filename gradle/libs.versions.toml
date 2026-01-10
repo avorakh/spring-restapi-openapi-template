@@ -1,7 +1,7 @@
 [versions]
-springBoot = '3.5.7'
-freefairLombokVersion = '8.13.1'
-lombok = '1.18.38'
+springBoot = '3.5.9'
+freefairLombokVersion = '9.1.0'
+lombok = '1.18.42'
 jacoco = '0.8.13'
 spotless = '8.1.0'
 jspecify = '1.0.0'
