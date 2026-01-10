@@ -1,19 +1,20 @@
-package dev.avorakh.isdp.template.config;
+package dev.avorakh.isdp.template.config.entity;
+
+import static dev.avorakh.isdp.template.constnants.CorsConstants.DEFAULT_MAX_AGE_SECONDS;
+import static dev.avorakh.isdp.template.constnants.CorsConstants.DISABLED;
 
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@Data
 @ConfigurationProperties(prefix = "app.cors")
-@Getter
-@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CorsProperties {
 
-    boolean enabled = false;
+    boolean enabled = DISABLED;
 
     List<String> allowedOrigins = List.of();
 
@@ -21,8 +22,7 @@ public class CorsProperties {
 
     List<String> allowedHeaders = List.of();
 
-    boolean allowCredentials = false;
+    boolean allowCredentials = DISABLED;
 
-    long maxAge = 3600;
+    long maxAge = DEFAULT_MAX_AGE_SECONDS;
 }
-

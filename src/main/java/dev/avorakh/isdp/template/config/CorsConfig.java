@@ -1,5 +1,6 @@
 package dev.avorakh.isdp.template.config;
 
+import dev.avorakh.isdp.template.config.entity.CorsProperties;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,4 +30,3 @@ public class CorsConfig implements WebMvcConfigurer {
                 .maxAge(corsProperties.getMaxAge());
     }
 }
-
