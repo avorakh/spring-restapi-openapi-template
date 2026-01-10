@@ -1,6 +1,6 @@
 package dev.avorakh.isdp.template.svc;
 
-import dev.avorakh.isdp.template.resource.AppInfoMeta;
+import dev.avorakh.isdp.template.model.AppInfoMeta;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ class AppInfoServiceImplTest {
     @Test
     void shouldSuccessfullyGetAppInfo() {
 
-        var expected = new AppInfoMeta(true, "template");
+        var expected = AppInfoMeta.builder().success(true).name("template").build();
 
         var actual = sut.getAppInfo();
 

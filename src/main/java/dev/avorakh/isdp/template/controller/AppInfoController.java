@@ -1,26 +1,27 @@
 package dev.avorakh.isdp.template.controller;
 
-import dev.avorakh.isdp.template.resource.AppInfoMeta;
+import dev.avorakh.isdp.template.api.AppInfoApi;
+import dev.avorakh.isdp.template.model.AppInfoMeta;
 import dev.avorakh.isdp.template.svc.AppInfoService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AppInfoController {
+public class AppInfoController implements AppInfoApi {
 
     @NonNull AppInfoService appInfoService;
 
-    @GetMapping("/app/info")
-    public @NonNull AppInfoMeta getAppInfo() {
+    @Override
+    public ResponseEntity<AppInfoMeta> getAppInfo() {
 
-        return appInfoService.getAppInfo();
+        return ResponseEntity.ok(appInfoService.getAppInfo());
     }
 }
