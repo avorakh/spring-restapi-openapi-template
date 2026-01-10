@@ -5,3 +5,20 @@ server:
   port: 8090
   servlet:
     context-path: /template
+
+app:
+  cors:
+    enabled:  ${CORS_ENABLED:true}
+    allowed-origins:
+      - "*"
+    allowed-methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      - PATCH
+    allowed-headers:
+      - "*"
+    allow-credentials: false
+    max-age: 3600
