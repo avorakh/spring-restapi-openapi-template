@@ -225,14 +225,17 @@ dependencyCheck {
 
 def openApiSpecFile = "$rootDir/docs/openapi/openapi.yaml"
 def openApiGeneratedSourcesDir = "$buildDir/generated/sources/openapi"
+def defaultPackage = "${group}.template"
+def defaultAnnotations =  String.join(";", '@lombok.Data','@lombok.Builder','@lombok.NoArgsConstructor',
+        '@lombok.AllArgsConstructor','@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)')
 
 openApiGenerate {
     generatorName = 'spring'
     inputSpec = openApiSpecFile
     outputDir = openApiGeneratedSourcesDir
-    apiPackage = 'dev.avorakh.isdp.template.api'
-    modelPackage = 'dev.avorakh.isdp.template.model'
-    invokerPackage = 'dev.avorakh.isdp.template.invoker'
+    apiPackage = "${defaultPackage}.api"
+    modelPackage = "${defaultPackage}.model"
+    invokerPackage = "${defaultPackage}.invoker"
     configOptions = [
         interfaceOnly          : 'true',
         delegatePattern        : 'false',
@@ -245,8 +248,7 @@ openApiGenerate {
         generateBuilders       : 'true',
         generatedConstructorWithRequiredArgs: 'false',
         dateLibrary            : 'java17',
-        additionalModelTypeAnnotations : "@lombok.Data;@lombok.Builder;@lombok.NoArgsConstructor;@lombok.AllArgsConstructor;@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)"
-
+        additionalModelTypeAnnotations : defaultAnnotations
     ]
 }
 
