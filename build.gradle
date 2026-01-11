@@ -242,10 +242,11 @@ openApiGenerate {
         useSpringBoot3         : 'true',
         documentationProvider  : 'none',
         openApiNullable        : 'true',
-        skipDefaultInterface   : 'true',
+        skipDefaultInterface   : 'false',
         useJakartaEe           : 'true',
         generateBuilders       : 'true',
-        generatedConstructorWithRequiredArgs: 'true'
+        generatedConstructorWithRequiredArgs: 'true',
+        dateLibrary            : 'java17'
     ]
 }
 
