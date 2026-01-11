@@ -41,6 +41,7 @@ dependencies {
     implementation libs.swagger.annotations
     implementation libs.jackson.databind.nullable
     implementation libs.jakarta.validation
+    implementation libs.springdoc.openapi.ui
 
     developmentOnly libs.spring.boot.devtools
 
@@ -79,6 +80,11 @@ jacoco {
     toolVersion = libs.versions.jacoco.get()
 }
 
+def excludeClasses = [
+    '**/api/**',
+    '**/model/**',
+    '**/invoker/**'
+]
 
 jacocoTestReport {
     executionData(test)
@@ -89,11 +95,7 @@ jacocoTestReport {
     dependsOn test
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                '**/api/**',
-                '**/model/**',
-                '**/invoker/**'
-            ])
+            fileTree(dir: it, exclude: excludeClasses)
         }))
     }
 }
@@ -110,11 +112,7 @@ jacocoTestCoverageVerification {
     dependsOn jacocoTestReport
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                '**/api/**',
-                '**/model/**',
-                '**/invoker/**'
-            ])
+            fileTree(dir: it, exclude: excludeClasses)
         }))
     }
 }
@@ -245,8 +243,10 @@ openApiGenerate {
         skipDefaultInterface   : 'false',
         useJakartaEe           : 'true',
         generateBuilders       : 'true',
-        generatedConstructorWithRequiredArgs: 'true',
-        dateLibrary            : 'java17'
+        generatedConstructorWithRequiredArgs: 'false',
+        dateLibrary            : 'java17',
+        additionalModelTypeAnnotations : "@lombok.Data;@lombok.Builder;@lombok.NoArgsConstructor;@lombok.AllArgsConstructor;@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)"
+
     ]
 }
 

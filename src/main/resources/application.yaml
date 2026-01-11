@@ -6,6 +6,17 @@ server:
   servlet:
     context-path: /template
 
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    display-request-duration: true
+
 app:
   cors:
     enabled:  ${CORS_ENABLED:true}

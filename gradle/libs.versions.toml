@@ -15,6 +15,7 @@ openapi-generator = '7.18.0'
 swagger-annotations = '2.2.41'
 jackson-databind-nullable = '0.2.8'
 jakarta-validation = '3.1.1'
+springdoc-openapi = '2.8.5'
 
 [libraries]
 spring-boot-devtools = { module = 'org.springframework.boot:spring-boot-devtools', version.ref = 'springBoot' }
@@ -25,6 +26,7 @@ spock-bom = { module = 'org.spockframework:spock-bom', version.ref = 'spock' }
 swagger-annotations = { module = 'io.swagger.core.v3:swagger-annotations', version.ref = 'swagger-annotations' }
 jackson-databind-nullable = { module = 'org.openapitools:jackson-databind-nullable', version.ref = 'jackson-databind-nullable' }
 jakarta-validation = { module = 'jakarta.validation:jakarta.validation-api', version.ref = 'jakarta-validation' }
+springdoc-openapi-ui = { module = 'org.springdoc:springdoc-openapi-starter-webmvc-ui', version.ref = 'springdoc-openapi' }
 
 [bundles]
 sec-fix = ['commons-lang3']
