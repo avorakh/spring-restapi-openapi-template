@@ -33,14 +33,13 @@ dependencies {
     compileOnly libs.jspecify
 
     implementation platform(SpringBootPlugin.BOM_COORDINATES)
+    implementation platform(libs.jackson.bom)
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     implementation libs.bundles.sec.fix
 
-    implementation libs.swagger.annotations
-    implementation libs.jackson.databind.nullable
-    implementation libs.jakarta.validation
+    implementation libs.bundles.openapi.generated.api
     implementation libs.springdoc.openapi.ui
 
     developmentOnly libs.spring.boot.devtools
